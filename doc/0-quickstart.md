@@ -33,7 +33,6 @@ python manage.py createsuperuser --email admin@example.com --username admin
 ```
 
 ## DRF 앱 등록 설정
-
 [tutorial/settings.py](../tutorial/settings.py) 파일을 수정하여 `INSTALLED_APPS` 튜플 변수에 `rest_framework` 앱을 등록한다.
 
 ```python
@@ -69,6 +68,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 PK와 다른 여러 가지 관계를 사용할 수도 있다.
 
+이 예제는 장고 기본 설치 `User`, `Group` 모델이 설치된다. 마이그레이션했을 때 각각의 테이블은 `auth_user`, `auth_group` 테이블이 만들어진다.
+
 ## 뷰
 
 [tutorial/quickstart/views.py](../quickstart/views.py) 파일 수정
@@ -82,7 +83,7 @@ from .serializers import UserSerializer, GroupSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    Django 사용자 조회 및 수정 가능한 종단 API
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -90,7 +91,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows groups to be viewed or edited.
+    Django 그룹 조회 및 수정 가능한 종단 API
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
@@ -100,8 +101,34 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 ## URL
 
+```python
+from django.contrib import admin
+from django.urls import include, path
+from rest_framework import routers
+
+from quickstart import views
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'groups', views.GroupViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('admin/', admin.site.urls),
+]
+```
+
 ## 페이지네이션
 
+[tutorial/settings.py](../tutorial/settings.py) 파일을 수정하여 다음 내용을 추가한다.
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
+```
 
 ## API 테스트
 
