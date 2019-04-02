@@ -68,7 +68,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 PK와 다른 여러 가지 관계를 사용할 수도 있다.
 
-이 예제는 장고 기본 설치 `User`, `Group` 모델이 설치된다. 마이그레이션했을 때 각각의 테이블은 `auth_user`, `auth_group` 테이블이 만들어진다.
+이 예제는 장고 기본 설치 `User`, `Group` 모델이 설치된다.
+
+마이그레이션했을 때 각각의 테이블은 `auth_user`, `auth_group` 테이블이 만들어진다.
 
 ## 뷰
 
@@ -123,7 +125,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 ```
-기본 뷰셋과 라우터를 사용하지 않고 API URL을 직접 다루려면 일반적인 클래스형 뷰를 사용하고 URL 설정을 명시적으로 작성해야 한다.
+기본 뷰셋과 라우터를 사용하지 않고 API URL을 직접 다루려면 일반적인 클래스형 뷰를 사용하고 URL 설정을 명시적으로 작성한다.
+
+[rest_framework.urls](//github.com/encode/django-rest-framework/blob/master/rest_framework/urls.py) 파일을 보면 로그인, 로그아웃 뷰를 포함한다.
+
 
 ## 페이지네이션
 
